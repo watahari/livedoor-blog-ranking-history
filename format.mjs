@@ -27,7 +27,9 @@ async function formatData() {
       continue;
     }
     const data = JSON.parse(fs.readFileSync(p));
-    temporaryBlogUrlList = Object.keys(data);
+    Object.keys(data).forEach(url => {
+      temporaryBlogUrlList.push(url);
+    });
   }
   last7DaysJavaScript += "];";
   // unique

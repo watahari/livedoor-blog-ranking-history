@@ -1,0 +1,23 @@
+on:
+  schedule:
+    - cron:  '15 12 * * *'
+  workflow_dispatch:
+name: Scrape Data
+jobs:
+  scrape:
+    name: scrape
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - name: Build
+      run: npm install
+    - name: Scrape
+      run: npm run scrape
+      timeout-minutes: 60
+    - name: FormatData
+      run: npm run format
+      timeout-minutes: 60
+    - uses: mikeal/publish-to-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub sets this for you
+        BRANCH_NAME: 'main'

@@ -1,0 +1,28 @@
+{
+  "name": "ranking-history-test",
+  "version": "1.0.0",
+  "description": "scrape livedoor-blog-ranking",
+  "main": "index.js",
+  "scripts": {
+    "scrape": "node ./scrape.mjs",
+    "format": "node ./format.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watahari/ranking-history-test.git"
+  },
+  "keywords": [
+    "actions"
+  ],
+  "author": "watahari",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/watahari/ranking-history-test/issues"
+  },
+  "homepage": "https://github.com/watahari/ranking-history-test#readme",
+  "dependencies": {
+    "jsdom": "^19.0.0",
+    "node-fetch": "^3.2.6"
+  }
+}

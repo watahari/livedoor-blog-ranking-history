@@ -17,12 +17,8 @@ async function formatData() {
   let temporaryBlogUrlList = [];
   last7DaysJavaScript = "var labels = [";
   for (let i = 6; i >= 0; i--) {
-    console.log(now.getUTCDate());
-    console.log(now.getUTCDate() - i);
     const targetDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - i, now.getUTCHours());
-    console.log(targetDate);
     const targetDateString = fileString(targetDate);
-    console.log(targetDateString);
 
     last7DaysJavaScript += "'" + targetDateString + "',";
 

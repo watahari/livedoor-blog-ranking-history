@@ -32,7 +32,8 @@ async function getData() {
 
 getData()
   .then(() => {
-    fs.writeFileSync(path.resolve(pathToData), JSON.stringify(data, null, 2));
+    // fs.writeFileSync(path.resolve(pathToData), JSON.stringify(data, null, 2));
+    fs.writeFileSync(path.resolve(pathToData), JSON.stringify(data));
   });
 
 function fileString(ts) {

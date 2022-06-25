@@ -66,7 +66,8 @@ async function formatData() {
 
   // output as json
   last7DaysJavaScript += "var datasets = ";
-  last7DaysJavaScript += JSON.stringify(Object.values(last7DaysData), null, 2);
+  //last7DaysJavaScript += JSON.stringify(Object.values(last7DaysData), null, 2);
+  last7DaysJavaScript += JSON.stringify(Object.values(last7DaysData));
   last7DaysJavaScript += ";";
 }
 

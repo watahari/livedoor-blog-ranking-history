@@ -5,14 +5,12 @@ import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const dataFolder = '/data';
 const resultFolder = '/frontend';
-const last7DaysFileName = 'data_last7d.js';
-const last7DaysFilePath = path.join(__dirname, resultFolder, last7DaysFileName);
 const now = new Date();
 const outOfRank = 101;
 
 let last7DaysJavaScript = "";
 
-async function formatData() {
+async function formatData(dataFolder2) {
   // urlリストを作りつつ、last7DaysJavaScriptにlabelを組み立てていく
   let temporaryBlogUrlList = [];
   last7DaysJavaScript = "var labels = [";
@@ -22,7 +20,7 @@ async function formatData() {
 
     last7DaysJavaScript += "'" + targetDateString + "',";
 
-    const p = path.join(__dirname, dataFolder, targetDateString) + '.json';
+    const p = path.join(__dirname, dataFolder, dataFolder2, targetDateString) + '.json';
     if (!fs.existsSync(p)) {
       continue;
     }
@@ -46,7 +44,7 @@ async function formatData() {
   for (let i = 6; i >= 0; i--) {
     const targetDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - i, now.getUTCHours());
     const targetDateString = fileString(targetDate);
-    const p = path.join(__dirname, dataFolder, targetDateString) + '.json';
+    const p = path.join(__dirname, dataFolder, dataFolder2, targetDateString) + '.json';
     if (!fs.existsSync(p)) {
       continue;
     }
@@ -71,8 +69,10 @@ async function formatData() {
   last7DaysJavaScript += ";";
 }
 
-formatData()
+formatData("/livedoor-blog")
   .then(() => {
+    const last7DaysFileName = 'livedoor_blog_data_last7d.js';
+    const last7DaysFilePath = path.join(__dirname, resultFolder, last7DaysFileName);
     fs.writeFileSync(path.resolve(last7DaysFilePath), last7DaysJavaScript);
   });
 

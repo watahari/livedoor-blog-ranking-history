@@ -2,10 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>ライブドアブログ ランキング 推移(履歴)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-colorschemes/0.4.0/chartjs-plugin-colorschemes.min.js" integrity="sha512-AcghRXJUs1RaSrhWEbtX2W0cpgclyjDqEtKUw+bRzzvGU5NikAMVwGlrRKqUvQWHr15SkogpMFXFRnnkkHhxXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="./data_last7d.js"></script>
+    <title>ブログランキング推移の研究</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176694381-1"></script>
     <script>
@@ -16,75 +13,15 @@
     </script>
   </head>
   <body>
-    <h1>ライブドアブログ ランキング 推移(履歴)</h1>
+    <h1>ブログランキング推移の研究</h1>
     <div style="margin:10px;">
-      <a href="https://blog.livedoor.com/ranking/">ブログランキング - ライブドアブログ</a>の総合ランキングについて、毎日1-100位を集計し、推移を可視化しています。<br>
+      <ul>
+        <li><a href="./livedoor_blog_data_last7d.html">ライブドアブログ ランキング 推移(履歴) last 7days</a></li>
+      </ul>
     </div>
     <div style="margin:10px;">
-      なお、このページのデータは管理人の個人的な研究を目的としています。<br>
-      非公式です。このページについての問い合わせは、ライブドアブログにするべきではありません。<br>
-      データの正確性には責任を持ちません。また、このデータを利用して発生したいかなる損害についても責任を負いません。<br>
-      最新の正確なランキングは公式の<a href="https://blog.livedoor.com/ranking/">ブログランキング - ライブドアブログ</a>を参照してください。
+      なお、これらのページのデータは管理人の個人的な研究を目的としています。<br>
+      データの正確性には責任を持ちません。また、このデータを利用して発生したいかなる損害についても責任を負いません。
     </div>
-    <canvas id="myChart" width="400" height="800"></canvas>
-    <script>
-      var ctx = document.getElementById("myChart").getContext('2d');
-      const newLegendClickHandler = function(e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
-
-        ci.data.datasets.forEach(function(e, i) {
-          var meta = ci.getDatasetMeta(i);
-
-          if (i !== index) {
-            if (!alreadyHidden) {
-              meta.hidden = meta.hidden === null ? !meta.hidden : null;
-            } else if (meta.hidden === null) {
-              meta.hidden = true;
-            }
-          } else if (i === index) {
-            meta.hidden = null;
-          }
-        });
-
-        ci.update();
-      };
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: datasets,
-        },
-        options: {
-          legend: {
-            onClick: newLegendClickHandler
-          },
-          plugins: {
-            colorschemes: {
-              scheme: 'tableau.Tableau20'
-            }
-          },
-          elements: {
-            line: {
-             tension: 0,
-             fill: false,
-            }
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                reverse: true,
-                min: 1,
-                max: 100,
-                callback: function(value){
-                  return value+'位';
-                }
-              }
-            }],
-          },
-        }
-      });
-    </script>
   </body>
 </html>

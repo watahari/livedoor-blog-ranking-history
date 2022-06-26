@@ -9,11 +9,10 @@ const { JSDOM } = jsdom;
 const now = new Date();
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const dataFolder = '/data';
-const pathToData = path.join(__dirname, dataFolder, fileString(now)) + '.json';
 
 let data = {};
 
-async function getData() {
+async function getLivedoorBlogData() {
   const res = await fetch('https://blog.livedoor.com/ranking/');
   const html = await res.text();
   const dom = new JSDOM(html);
@@ -30,8 +29,10 @@ async function getData() {
   });
 }
 
-getData()
+getLivedoorBlogData()
   .then(() => {
+    const dataFolder2 = '/livedoor-blog';
+    const pathToData = path.join(__dirname, dataFolder, dataFolder2, fileString(now)) + '.json';
     // fs.writeFileSync(path.resolve(pathToData), JSON.stringify(data, null, 2));
     fs.writeFileSync(path.resolve(pathToData), JSON.stringify(data));
   });

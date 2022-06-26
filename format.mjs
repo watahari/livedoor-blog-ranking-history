@@ -8,17 +8,17 @@ const resultFolder = '/frontend';
 const now = new Date();
 const outOfRank = 101;
 
-let last7DaysJavaScript = "";
 
-async function formatData(dataFolder2) {
-  // urlリストを作りつつ、last7DaysJavaScriptにlabelを組み立てていく
+async function formatData(dataFolder2, term) {
+  let resultRawJavaScript = "";
+  // urlリストを作りつつ、resultRawJavaScriptにlabelを組み立てていく
   let temporaryBlogUrlList = [];
-  last7DaysJavaScript = "var labels = [";
-  for (let i = 6; i >= 0; i--) {
+  resultRawJavaScript = "var labels = [";
+  for (let i = term - 1; i >= 0; i--) {
     const targetDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - i, now.getUTCHours());
     const targetDateString = fileString(targetDate);
 
-    last7DaysJavaScript += "'" + targetDateString + "',";
+    resultRawJavaScript += "'" + targetDateString + "',";
 
     const p = path.join(__dirname, dataFolder, dataFolder2, targetDateString) + '.json';
     if (!fs.existsSync(p)) {
@@ -29,7 +29,7 @@ async function formatData(dataFolder2) {
       temporaryBlogUrlList.push(url);
     });
   }
-  last7DaysJavaScript += "];";
+  resultRawJavaScript += "];";
   // unique
   const blogUrlList = Array.from(new Set(temporaryBlogUrlList))
 
@@ -41,11 +41,14 @@ async function formatData(dataFolder2) {
       "data": []
     };
   });
-  for (let i = 6; i >= 0; i--) {
+  for (let i = term - 1; i >= 0; i--) {
     const targetDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - i, now.getUTCHours());
     const targetDateString = fileString(targetDate);
     const p = path.join(__dirname, dataFolder, dataFolder2, targetDateString) + '.json';
     if (!fs.existsSync(p)) {
+      blogUrlList.forEach(url => {
+        last7DaysData[url]["data"].push(outOfRank);
+      });
       continue;
     }
     const data = JSON.parse(fs.readFileSync(p));
@@ -63,17 +66,25 @@ async function formatData(dataFolder2) {
   }
 
   // output as json
-  last7DaysJavaScript += "var datasets = ";
-  //last7DaysJavaScript += JSON.stringify(Object.values(last7DaysData), null, 2);
-  last7DaysJavaScript += JSON.stringify(Object.values(last7DaysData));
-  last7DaysJavaScript += ";";
+  resultRawJavaScript += "var datasets = ";
+  //resultRawJavaScript += JSON.stringify(Object.values(last7DaysData), null, 2);
+  resultRawJavaScript += JSON.stringify(Object.values(last7DaysData));
+  resultRawJavaScript += ";";
+  return resultRawJavaScript;
 }
 
-formatData("/livedoor-blog")
-  .then(() => {
-    const last7DaysFileName = 'livedoor_blog_data_last7d.js';
-    const last7DaysFilePath = path.join(__dirname, resultFolder, last7DaysFileName);
-    fs.writeFileSync(path.resolve(last7DaysFilePath), last7DaysJavaScript);
+formatData("/livedoor-blog", 7)
+  .then(result => {
+    const fileName = 'livedoor_blog_data_last7d.js';
+    const last7DaysFilePath = path.join(__dirname, resultFolder, fileName);
+    fs.writeFileSync(path.resolve(last7DaysFilePath), result);
+  });
+
+formatData("/livedoor-blog", 28)
+  .then(result => {
+    const fileName = 'livedoor_blog_data_last28d.js';
+    const last7DaysFilePath = path.join(__dirname, resultFolder, fileName);
+    fs.writeFileSync(path.resolve(last7DaysFilePath), result);
   });
 
 function fileString(ts) {

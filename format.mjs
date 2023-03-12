@@ -87,6 +87,13 @@ formatData("/livedoor-blog", 28)
     fs.writeFileSync(path.resolve(last7DaysFilePath), result);
   });
 
+formatData("/livedoor-blog", 90)
+  .then(result => {
+    const fileName = 'livedoor_blog_data_last90d.js';
+    const last90DaysFilePath = path.join(__dirname, resultFolder, fileName);
+    fs.writeFileSync(path.resolve(last90DaysFilePath), result);
+  });
+
 function fileString(ts) {
   const year = ts.getUTCFullYear();
   const month = (ts.getUTCMonth() + 1).toString().padStart(2, '0');

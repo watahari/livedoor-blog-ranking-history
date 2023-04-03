@@ -33,10 +33,10 @@ async function formatData(dataFolder2, term) {
   // unique
   const blogUrlList = Array.from(new Set(temporaryBlogUrlList))
 
-  // last7DaysDataに、Blog単位の順位列にしていく
-  let last7DaysData = {};
+  // lastNDaysDataに、Blog単位の順位列にしていく
+  let lastNDaysData = {};
   blogUrlList.forEach(url => {
-    last7DaysData[url] = {
+    lastNDaysData[url] = {
       "label": null,
       "data": []
     };
@@ -47,28 +47,28 @@ async function formatData(dataFolder2, term) {
     const p = path.join(__dirname, dataFolder, dataFolder2, targetDateString) + '.json';
     if (!fs.existsSync(p)) {
       blogUrlList.forEach(url => {
-        last7DaysData[url]["data"].push(outOfRank);
+        lastNDaysData[url]["data"].push(outOfRank);
       });
       continue;
     }
     const data = JSON.parse(fs.readFileSync(p));
 
     blogUrlList.forEach(url => {
-      if (!last7DaysData[url]["label"] && data[url]) {
-        last7DaysData[url]["label"] = data[url]["title"]
+      if (!lastNDaysData[url]["label"] && data[url]) {
+        lastNDaysData[url]["label"] = data[url]["title"]
       }
       if (data[url]) {
-        last7DaysData[url]["data"].push(parseInt(data[url]["rank"]));
+        lastNDaysData[url]["data"].push(parseInt(data[url]["rank"]));
       } else {
-        last7DaysData[url]["data"].push(outOfRank);
+        lastNDaysData[url]["data"].push(outOfRank);
       }
     });
   }
 
   // output as json
   resultRawJavaScript += "var datasets = ";
-  //resultRawJavaScript += JSON.stringify(Object.values(last7DaysData), null, 2);
-  resultRawJavaScript += JSON.stringify(Object.values(last7DaysData));
+  //resultRawJavaScript += JSON.stringify(Object.values(lastNDaysData), null, 2);
+  resultRawJavaScript += JSON.stringify(Object.values(lastNDaysData));
   resultRawJavaScript += ";";
   return resultRawJavaScript;
 }

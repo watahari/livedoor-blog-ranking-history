@@ -58,7 +58,11 @@ async function formatData(dataFolder2, term) {
         lastNDaysData[url]["label"] = data[url]["title"]
       }
       if (data[url]) {
-        lastNDaysData[url]["data"].push(parseInt(data[url]["rank"]));
+        if (data[url]["rank"] == "0") {
+          lastNDaysData[url]["data"].push(null);
+        } else {
+          lastNDaysData[url]["data"].push(parseInt(data[url]["rank"]));
+        }
       } else {
         lastNDaysData[url]["data"].push(outOfRank);
       }

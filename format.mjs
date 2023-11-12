@@ -97,6 +97,20 @@ formatData("/livedoor-blog", 90)
     const last90DaysFilePath = path.join(__dirname, resultFolder, fileName);
     fs.writeFileSync(path.resolve(last90DaysFilePath), result);
   });
+formatData("/livedoor-blog", 180)
+  .then(result => {
+    const fileName = 'livedoor_blog_data_last180d.js';
+    const last90DaysFilePath = path.join(__dirname, resultFolder, fileName);
+    fs.writeFileSync(path.resolve(last90DaysFilePath), result);
+  });
+formatData("/livedoor-blog", 365)
+  .then(result => {
+    const fileName = 'livedoor_blog_data_last365d.js';
+    const last90DaysFilePath = path.join(__dirname, resultFolder, fileName);
+    fs.writeFileSync(path.resolve(last90DaysFilePath), result);
+  });
+
+
 
 function fileString(ts) {
   const year = ts.getUTCFullYear();
